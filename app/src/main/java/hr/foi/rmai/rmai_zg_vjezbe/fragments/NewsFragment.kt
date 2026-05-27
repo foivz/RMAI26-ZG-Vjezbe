@@ -53,7 +53,7 @@ class NewsFragment : Fragment() {
     private fun displayErrorMessage() {
         Toast.makeText(
             context,
-            "Error receving data from WS",
+            getString(R.string.news_ws_err_msg),
             Toast.LENGTH_LONG
         ).show()
     }

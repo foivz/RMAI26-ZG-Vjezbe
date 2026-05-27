@@ -54,12 +54,12 @@ class TasksAdapter(private val tasksList: MutableList<Task>,
             view.setOnLongClickListener {
                 AlertDialog.Builder(view.context)
                     .setTitle(taskName.text)
-                    .setNeutralButton("Delete task") { _, _ ->
+                    .setNeutralButton(view.context.getString(R.string.delete_task)) { _, _ ->
                         val deletedTask = tasksList[adapterPosition]
                         TasksDatabase.getInstance().getTasksDao().deleteTask(deletedTask)
                         removeTaskFromList()
                     }
-                    .setPositiveButton("Mark as completed") { _, _ ->
+                    .setPositiveButton(view.context.getString(R.string.task_mark_as_completed)) { _, _ ->
                         val completedTask = tasksList[adapterPosition]
                         completedTask.completed = true
                         TasksDatabase.getInstance().getTasksDao().insertTask(completedTask)
@@ -69,7 +69,7 @@ class TasksAdapter(private val tasksList: MutableList<Task>,
                             onTaskCompleted?.invoke(completedTask.id)
                         }
                     }
-                    .setNegativeButton("Cancel") { dialog, _ ->
+                    .setNegativeButton(view.context.getString(R.string.cancel)) { dialog, _ ->
                         dialog.cancel()
                     }
                     .show()
