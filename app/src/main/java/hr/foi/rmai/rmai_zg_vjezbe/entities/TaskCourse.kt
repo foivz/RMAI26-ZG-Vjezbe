@@ -1,6 +1,11 @@
 package hr.foi.rmai.rmai_zg_vjezbe.entities
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "task_courses")
 data class TaskCourse(
+    @PrimaryKey(autoGenerate = true) val id: Int,
     val name: String,
     val color: String
 ) {

@@ -14,6 +14,8 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import hr.foi.rmai.rmai_zg_vjezbe.adapters.MainPagerAdapter
+import hr.foi.rmai.rmai_zg_vjezbe.database.TasksDatabase
+import hr.foi.rmai.rmai_zg_vjezbe.helpers.MockDataLoader
 
 class MainActivity : AppCompatActivity() {
     lateinit var tabLayout: TabLayout
@@ -48,6 +50,9 @@ class MainActivity : AppCompatActivity() {
             navDrawerLayout.closeDrawers()
             true
         }
+
+        TasksDatabase.buildInstance(this)
+        MockDataLoader.loadMockData()
     }
 }
 

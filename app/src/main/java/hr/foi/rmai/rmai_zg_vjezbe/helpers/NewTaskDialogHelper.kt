@@ -78,7 +78,7 @@ class NewTaskDialogHelper(private val view: View) {
         val spinnerCourse: Spinner = view.findViewById(R.id.spn_new_task_dialog_course)
         val selectedCourse = spinnerCourse.selectedItem as TaskCourse
 
-        return Task(newTaskName, selectedDateTime.time, selectedCourse, false)
+        return Task(0, newTaskName, selectedDateTime.time, selectedCourse.id, false)
     }
 }
 

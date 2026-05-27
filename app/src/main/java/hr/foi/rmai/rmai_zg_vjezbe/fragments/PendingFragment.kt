@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hr.foi.rmai.rmai_zg_vjezbe.R
 import hr.foi.rmai.rmai_zg_vjezbe.adapters.TasksAdapter
+import hr.foi.rmai.rmai_zg_vjezbe.database.TasksDatabase
 import hr.foi.rmai.rmai_zg_vjezbe.helpers.MockDataLoader
 import hr.foi.rmai.rmai_zg_vjezbe.helpers.NewTaskDialogHelper
 
@@ -27,8 +29,15 @@ class PendingFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val tasks = TasksDatabase.getInstance().getTasksDao().getAllTasks(false)
+
         recyclerView = view.findViewById(R.id.rv_pending_tasks)
-        recyclerView.adapter = TasksAdapter(MockDataLoader.getDemoData())
+        recyclerView.adapter = TasksAdapter(tasks.toMutableList()) { taskId ->
+            parentFragmentManager.setFragmentResult(
+                "task_completed",
+                bundleOf("task_id" to taskId)
+            )
+        }
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
 
@@ -49,14 +58,20 @@ class PendingFragment : Fragment() {
             .setView(newTaskDialogView)
             .setTitle(getString(R.string.create_new_task))
             .setPositiveButton(getString(R.string.create_new_task)) { _, _ ->
-                val newTask = dialogHelper.buildTask()
+                var newTask = dialogHelper.buildTask()
+
+                val tasksDao = TasksDatabase.getInstance().getTasksDao()
+                val newTaskId = tasksDao.insertTask(newTask)
+
+                newTask = tasksDao.getTask(newTaskId[0].toInt())
+
                 val tasksAdapter = recyclerView.adapter as TasksAdapter
                 tasksAdapter.addTask(newTask)
             }
             .show()
 
-
-        dialogHelper.populateSpinner(MockDataLoader.getDemoCourses())
+        val courses = TasksDatabase.getInstance().getTaskCoursesDao().getAllCourses()
+        dialogHelper.populateSpinner(courses)
         dialogHelper.activateDateTimeListeners()
     }
 }
