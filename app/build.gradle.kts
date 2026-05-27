@@ -51,4 +51,9 @@ dependencies {
     ksp("androidx.room:room-compiler:$room_version")
     implementation ("androidx.room:room-runtime:$room_version")
     annotationProcessor ("androidx.room:room-compiler:$room_version")
+
+    implementation("com.google.code.gson:gson:2.13.1")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.picasso:picasso:2.8")
 }
